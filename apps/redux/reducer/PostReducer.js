@@ -40,7 +40,11 @@ const postReducer = (state = initialState, action) => {
         ...state,
         userImageDetails: action.payload,
       };
-
+    case CLEAR_IS_SUCCESSFULLY_POST:
+      return {
+        ...state,
+        isSuccessfullyPost: false,
+      };
     default:
       return state;
   }

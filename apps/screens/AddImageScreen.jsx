@@ -35,7 +35,10 @@ import { postAction } from "../redux/action/PostAction";
 import { useFocusEffect } from "@react-navigation/native";
 import Loader from "../components/Loader";
 import { fetchLocationName } from "../redux/action/AuthAction";
-import { DELETE_LOCATION } from "../redux/actionTypes";
+import {
+  CLEAR_IS_SUCCESSFULLY_POST,
+  DELETE_LOCATION,
+} from "../redux/actionTypes";
 import Geolocation from "react-native-geolocation-service";
 const intailState = () => {
   return {
@@ -142,14 +145,15 @@ const AddImage = ({ setOpenCamera, imageUri, navigation }) => {
       setState((prev) => ({
         ...prev,
         description: "",
-        test: "",
+        tags: "",
         imageUrL: null,
-        liveLocation: true,
+        liveLocation: false,
         selectionMode: 0,
         longitude: null,
         latitude: null,
       }));
     }
+    dispatch({ type: CLEAR_IS_SUCCESSFULLY_POST });
   }, [isSuccessfullyPost]);
 
   const handleChange = (name) => (event) => {

@@ -224,7 +224,7 @@ const OrganizationLogin = ({
       email,
       mobile,
       image: imageUri,
-      role: isRegisterUser ? "RegisterUser" : "organizationUser",
+      role: isRegisterUser ? "registerUser" : "organizationUser",
       password: pwd,
       confirmPassword: cfPwd,
     };
