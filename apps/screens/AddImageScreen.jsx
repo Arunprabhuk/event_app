@@ -200,6 +200,7 @@ const AddImage = ({ setOpenCamera, imageUri, navigation }) => {
         : latitude,
       imageUri,
       id: userDetail.id,
+      email: userDetail.email,
     };
     dispatch(postAction(body));
   };

@@ -15,9 +15,11 @@ import { addBlack, avatarBoy, home, logout } from "../../constants/image";
 import { Image } from "react-native-animatable";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import serverURL from "../../helpers/serverURL";
+import { logoutUser } from "../../redux/action/AuthAction";
 export default function DrawerContainer({ navigation }) {
   const { userDetail } = useSelector((state) => state.post);
-
+  const dispatch = useDispatch();
+  console.log(userDetail, "userDe");
   const DrawerArr = [
     { route: "HomeStack", Title: "Home", Name: "home", leftSource: home },
     {
@@ -33,8 +35,12 @@ export default function DrawerContainer({ navigation }) {
       leftSource: logout,
     },
   ];
-  const onhandleClick = async (route) => {
-    await AsyncStorage.removeItem("token");
+  const onhandleClick = async (name, route) => {
+    if (name === "logout") {
+      dispatch(logoutUser({ id: userDetail.id }));
+      await AsyncStorage.removeItem("token");
+      navigation.navigate(route);
+    }
     navigation.navigate(route);
   };
   return (
@@ -89,7 +95,7 @@ export default function DrawerContainer({ navigation }) {
                   padding: 10,
                 }}
                 key={index}
-                onPress={() => onhandleClick(item.route)}
+                onPress={() => onhandleClick(item.Name, item.route)}
               >
                 <Image source={item.leftSource} />
                 <Text style={{ marginLeft: 10, color: "#00000061" }}>

@@ -43,6 +43,7 @@ export const postAction = ({
   longtitude,
   latitude,
   id,
+  email,
 }) => {
   console.log(longtitude, latitude);
   return async (dispatch) => {
@@ -80,6 +81,7 @@ export const postAction = ({
       formData.append("longtitude", longtitude);
       formData.append("latitude", latitude);
       formData.append("id", id);
+      formData.append("email", email);
       const response = await fetch(`${serverURL()}/user/post`, {
         method: "POST",
         headers: {

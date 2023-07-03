@@ -56,7 +56,6 @@ export const registerUser = (
   },
   navigation
 ) => {
-  console.log("passsssss", password, confirmPassword);
   return async (dispatch) => {
     if (!image) {
       Toast.show({
@@ -138,6 +137,41 @@ export const loginUser = (data, navigation) => {
         await AsyncStorage.setItem("isLoggedin", "true");
         navigation.navigate("DrawerStack");
       } else if (result.statuscode === 400) {
+        Toast.show({
+          type: "ErrorToast",
+          text1: result.message,
+        });
+      } else {
+        Toast.show({
+          type: "ErrorToast",
+          text1: result.error,
+        });
+      }
+      dispatch(loginFailed());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+export const logoutUser = (data) => {
+  console.log(serverURL());
+  return async (dispatch) => {
+    try {
+      const res = await fetch(`${serverURL()}/api/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+
+      if (result.statuscode === 200) {
+        Toast.show({
+          type: "SuccessToast",
+          text1: result.message,
+        });
+      } else if (result.statuscode === 404) {
         Toast.show({
           type: "ErrorToast",
           text1: result.message,
