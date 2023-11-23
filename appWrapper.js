@@ -1,13 +1,14 @@
-import {View, Text} from 'react-native';
-import React from 'react';
-import {store} from './apps/redux/store';
-import {Provider} from 'react-redux';
-import App from './App';
-import AppNavigator from './apps/navigation/AppNavigator';
+import { View, Text } from "react-native";
+import React from "react";
+
+import AppNavigator from "./apps/navigation/AppNavigator";
+import StackNaviagator from "./src/Navigation/StackNaviagator";
+import store from "./src/Redux/store";
+import { Provider } from "react-redux";
 const AppWrapper = () => {
   return (
     <Provider store={store}>
-      <AppNavigator />
+      <StackNaviagator />
     </Provider>
   );
 };
