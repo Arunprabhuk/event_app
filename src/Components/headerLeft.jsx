@@ -1,11 +1,13 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwsome from "react-native-vector-icons/FontAwesome";
 
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { logout } from "../Redux/slices/EventAuthReducer";
 import { useDispatch } from "react-redux";
+import { Avatar } from "react-native-paper";
 
 export const HeaderLeft = ({ type, route }) => {
   const navigation = useNavigation();
@@ -36,24 +38,52 @@ export const HeaderLeft = ({ type, route }) => {
     </Pressable>
   );
 };
-export const HeaderRight = ({ type, set }) => {
+export const HeaderRight = ({ type, set, role }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const getName = async () => {
+    const names = await AsyncStorage.getItem("userName");
+    setName(names);
+  };
+  useEffect(() => {
+    getName();
+  }, []);
+  console.log(name);
 
   const onLogOut = async () => {
     await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("userId");
+    await AsyncStorage.removeItem("userName");
+    await AsyncStorage.removeItem("userRole");
     set(false);
     dispatch(logout());
   };
   return (
-    <View style={{ marginRight: 30 }}>
+    <View
+      style={{
+        marginRight: 20,
+        flexDirection: "row",
+        alignItems: "center",
+      }}
+    >
+      {type === "dashboard" && role === "participant" && (
+        <Pressable
+          onPress={() => navigation.navigate("CreateProfile")}
+          style={{ marginLeft: 15 }}
+        >
+          <Avatar.Text
+            style={{ backgroundColor: "white", fontWeight: 800 }}
+            color="black"
+            size={34}
+            label={name.charAt(0).toUpperCase()}
+          />
+        </Pressable>
+      )}
       {type === "dashboard" && (
-        <MaterialCommunityIcons
-          onPress={onLogOut}
-          name="power"
-          color={"white"}
-          size={25}
-        />
+        <Pressable style={{ marginLeft: 15 }} onPress={onLogOut}>
+          <MaterialCommunityIcons name="power" color={"white"} size={25} />
+        </Pressable>
       )}
     </View>
   );

@@ -142,14 +142,14 @@ const AddEvent = () => {
       case "startTime":
         set((prev) => ({
           ...prev,
-          startTime: moment(date.nativeEvent.timestamp).format("HH:mm"),
+          startTime: moment(date.nativeEvent.timestamp).format("hh:mm a"),
           openStartTime: false,
         }));
         break;
       case "endTime":
         set((prev) => ({
           ...prev,
-          endTime: moment(date.nativeEvent.timestamp).format("HH:mm"),
+          endTime: moment(date.nativeEvent.timestamp).format("hh:mm a"),
           openEndTime: false,
         }));
         break;
@@ -163,7 +163,6 @@ const AddEvent = () => {
       const value = await AsyncStorage.getItem("token");
       const userId = await AsyncStorage.getItem("userId");
       if (value !== null) {
-        console.log(participants);
         const newEvent = {
           eventName: formData.eventName,
           participants: participants,
@@ -173,11 +172,13 @@ const AddEvent = () => {
           location: "",
           repeat: "",
           token: value,
+          startTime: startTime,
+          endTime: endTime,
         };
 
         dispatch(addEventAction(newEvent));
         // dispatch(getUserDetailsAction(userId));
-        navigation.navigate("Event");
+        navigation.navigate("UserDashBoard");
       }
     } catch (e) {
       alert("Failed to fetch the input from storage");
@@ -351,7 +352,7 @@ const AddEvent = () => {
             name="user-alt"
           />
           <TextInput
-            placeholder="@ All Participents"
+            placeholder="@allparticipents"
             style={{
               width: width - 100,
               height: 45,
@@ -452,7 +453,9 @@ const AddEvent = () => {
                   size={20}
                   name="clock"
                 />
-                <Text style={{ color: "grey", fontWeight: 600 }}>Time</Text>
+                <Text style={{ color: "grey", fontWeight: 600, fontSize: 11 }}>
+                  Time
+                </Text>
               </View>
               <View
                 style={{
@@ -482,7 +485,9 @@ const AddEvent = () => {
                   size={20}
                   name="clock"
                 />
-                <Text style={{ color: "grey", fontWeight: 600 }}>Time</Text>
+                <Text style={{ color: "grey", fontWeight: 600, fontSize: 11 }}>
+                  Time
+                </Text>
               </View>
               <View
                 style={{

@@ -8,35 +8,42 @@ import {
 } from "react-native";
 import React, { useRef, useState } from "react";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import TimePicker from "@react-native-community/datetimepicker";
+
 import { Calendar } from "react-native-calendars";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import { Slider, Switch } from "react-native-elements";
+import { Input, Slider, Switch } from "react-native-elements";
 import { TextInput } from "react-native-paper";
 import Swiper from "react-native-deck-swiper";
 import { profileData } from "../data/profileData";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
+import SelectDropdown from "react-native-select-dropdown";
 import {
   AddProfileAction,
+  editProfileAction,
   updateUserData,
   updateUserProfileList,
 } from "../Redux/slices/EventAuthReducer";
 import Toast from "react-native-toast-message";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import moment from "moment";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const initialState = () => {
   return {
-    Name: "",
-    Grade: "",
-    Age: "",
-    Gender: "",
+    name: "",
+    grade: "",
+    age: "",
+    gender: "",
     "Date Of Birth": "",
-    Nationality: "",
-    "Building Name": "",
-    "Room Number": "",
+    nationality: "",
+    buildingName: "",
+    roomNumber: "",
     "Parent/Gurdian Name": "",
     "Parent/Gurdian Number": "",
     Relationship: "",
-
+    isOpen: false,
     value: 1,
   };
 };
@@ -85,34 +92,30 @@ const EditProfileScreen = () => {
       value: prev.value + 1,
     }));
   };
-  const OnSubmit = async () => {
-    if (state.Name !== "") {
-      const newData = {
-        id: route.params.id,
-        name: state.Name,
-        age: state.Age,
-        grade: state.Grade,
-        DOB: state["Date Of Birth"],
-        gender: state.Gender,
-        nationality: state.Nationality,
-        buildingName: state["Building Name"],
-        roomNumber: state["Room Number"],
-        emergencyContact: {
-          name: state["Parent/Gurdian Name"],
-          number: state["Parent/Gurdian Number"],
-          relationShip: state.Relationship,
-        },
-        token: loginData.token,
-      };
-      const updatedArray = userProfileList.map((item) => {
-        if (item.id === route.params.id) {
-          return { ...item, ...newData };
-        }
-        return item;
-      });
 
-      dispatch(updateUserProfileList(updatedArray));
-      dispatch(AddProfileAction(newData));
+  const OnSubmit = async () => {
+    if (state.name !== "") {
+      const userId = await AsyncStorage.getItem("userId");
+      const newData = {
+        id: String(route.params.id),
+        name: state.name,
+        age: state.age,
+        grade: state.grade,
+        DOB: state["Date Of Birth"],
+        gender: state.gender,
+        nationality: state.nationality,
+        buildingName: state.buildingName,
+        roomNumber: state.roomNumber,
+        // emergencyContact: {
+        //   name: state["Parent/Gurdian Name"],
+        //   number: state["Parent/Gurdian Number"],
+        //   relationShip: state.Relationship,
+        // },
+        userId: userId,
+      };
+      console.log(newData);
+      dispatch(editProfileAction(newData));
+
       navigation.navigate("CreateProfile");
     } else {
       Toast.show({
@@ -125,273 +128,272 @@ const EditProfileScreen = () => {
   };
 
   return (
-    <View style={{ alignItems: "center" }}>
-      <View style={{ width: width - 40 }}>
-        <Slider
-          value={value}
-          onValueChange={(value) => {
-            setState((prev) => ({
-              ...prev,
-              value,
-            }));
-          }}
-          allowTouchTrack={false}
-          disabled={true}
-          maximumValue={9}
-          minimumValue={1}
-          trackStyle={{ height: 10, backgroundColor: "transparent" }}
-          thumbStyle={{ height: 40, width: 40, backgroundColor: color() }}
-          thumbProps={{
-            children: (
-              <FontAwesome5
-                name="smile"
-                size={30}
-                reverse
-                color={"white"}
-                style={{ top: 5, left: 5 }}
-                disabled={true}
-              />
-            ),
-          }}
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        paddingTop: 0,
+        backgroundColor: "white",
+        paddingBottom: 5,
+      }}
+    >
+      <View style={{ marginVertical: 10 }}>
+        <TextInput
+          onChangeText={(text) => onHandleChange(text, "name")}
+          placeholder="Name"
+          style={{ width: width - 80, backgroundColor: "whitesmoke" }}
         />
       </View>
-      <View style={{ width: width - 10, height: 50 }}>
-        <Swiper
-          ref={useSwiper}
-          stackScale={20}
-          cards={profileData}
-          renderCard={(card) => {
+      <View style={{ marginVertical: 10 }}>
+        <SelectDropdown
+          data={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]}
+          onSelect={(selectedItem, index) => {
+            setState((prev) => ({
+              ...prev,
+              class: selectedItem,
+            }));
+          }}
+          defaultButtonText={"Select Class"}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          buttonStyle={styles.dropdown2BtnStyle}
+          buttonTextStyle={styles.dropdown2BtnTxtStyle}
+          renderDropdownIcon={(isOpened) => {
             return (
-              <View
-                style={{
-                  borderRadius: 40,
-                  borderWidth: 2,
-                  borderColor: "#E8E8E8",
-                  marginTop: 10,
-                  height: 450,
-                  borderColor: color(),
-                  borderWidth: 1,
-                  backgroundColor: "white",
-                  position: "relative",
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 18,
-                    backgroundColor: color(),
-                    borderTopLeftRadius: 40,
-                    borderTopRightRadius: 40,
-                    color: "white",
-                  }}
-                >
-                  {card.label}
-                </Text>
-
-                {card.type === "input" && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                      height: 300,
-                    }}
-                  >
-                    {card.label === "Emergency Contact" ? (
-                      <View>
-                        <TextInput
-                          style={{
-                            width: width - 100,
-                            color: "black",
-                            fontSize: 18,
-                            fontWeight: "700",
-                            textTransform: "uppercase",
-                            backgroundColor: "white",
-                            marginBottom: 20,
-                          }}
-                          onChangeText={(text) =>
-                            onHandleChange(text, "Parent/Gurdian Name")
-                          }
-                          placeholderTextColor={"grey"}
-                          placeholder={"Parent/Gurdian Name"}
-                          value={state[card.label]}
-                        />
-                        <TextInput
-                          style={{
-                            width: width - 100,
-                            color: "black",
-                            fontSize: 18,
-                            fontWeight: "700",
-                            textTransform: "uppercase",
-                            backgroundColor: "white",
-                            marginBottom: 20,
-                          }}
-                          name={card.label}
-                          onChangeText={(text) =>
-                            onHandleChange(text, "Relationship")
-                          }
-                          value={state[card.label]}
-                          placeholderTextColor={"grey"}
-                          placeholder={"Relationship"}
-                        />
-                        <TextInput
-                          style={{
-                            width: width - 100,
-                            color: "black",
-                            fontSize: 18,
-                            fontWeight: "700",
-                            textTransform: "uppercase",
-                            backgroundColor: "white",
-                            marginBottom: 20,
-                          }}
-                          name={card.label}
-                          onChangeText={(text) =>
-                            onHandleChange(text, "Parent/Gurdian Number")
-                          }
-                          value={state[card.label]}
-                          placeholderTextColor={"grey"}
-                          placeholder={"Parent/Gurdian Number"}
-                        />
-                      </View>
-                    ) : (
-                      <TextInput
-                        style={{
-                          width: width - 100,
-                          color: "black",
-                          fontSize: 18,
-                          fontWeight: "700",
-                          textTransform: "uppercase",
-                          backgroundColor: "white",
-                        }}
-                        name={card.label}
-                        onChangeText={(text) =>
-                          onHandleChange(text, card.label)
-                        }
-                        value={
-                          state[card.label] === "" ? null : state[card.label]
-                        }
-                        placeholder={card.label}
-                        placeholderTextColor={"grey"}
-                      />
-                    )}
-                  </View>
-                )}
-                {card.label === "Date Of Birth" && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                      height: 300,
-                    }}
-                  >
-                    <TextInput
-                      style={{
-                        width: width - 100,
-                        color: "black",
-                        fontSize: 18,
-                        fontWeight: "700",
-                        textTransform: "uppercase",
-                        backgroundColor: "white",
-                      }}
-                      onChangeText={(text) => onHandleChange(text, card.label)}
-                      placeholder={"31/12/1999"}
-                      placeholderTextColor={"grey"}
-                    />
-                  </View>
-                )}
-                {card.label === "Done" && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                      height: 300,
-                    }}
-                  >
-                    <Text style={{ fontSize: 19, color: color() }}>
-                      Click to upload details.
-                    </Text>
-                    <FontAwesome5
-                      size={20}
-                      color={color()}
-                      name="long-arrow-alt-down"
-                    />
-                  </View>
-                )}
-                <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 120,
-                    height: 60,
-                    borderBottomLeftRadius: 40,
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    backgroundColor: value === 1 ? "grey" : color(),
-                  }}
-                  disabled={value === 1}
-                  onPress={onClickBack}
-                >
-                  <FontAwesome5
-                    color={"white"}
-                    style={{ fontSize: 24 }}
-                    name="hand-point-left"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 120,
-                    height: 60,
-                    borderBottomRightRadius: 40,
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    backgroundColor: value === 10 ? "grey" : color(),
-                  }}
-                  disabled={value === 10}
-                  onPress={onClickNext}
-                >
-                  <FontAwesome5
-                    style={{ fontSize: 24 }}
-                    name="hand-point-right"
-                    color={"white"}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 150,
-                    height: 60,
-                    position: "absolute",
-                    bottom: 0,
-                    right: 120,
-                    backgroundColor: "white",
-                  }}
-                  onPress={OnSubmit}
-                  disabled={value !== 10}
-                >
-                  <MaterialIcons
-                    style={{ fontSize: 34 }}
-                    name="done"
-                    color={value === 10 ? "green" : "grey"}
-                  />
-                </TouchableOpacity>
-              </View>
+              <FontAwesome
+                name={isOpened ? "chevron-up" : "chevron-down"}
+                color={"#FFF"}
+                size={18}
+              />
             );
           }}
-          onSwiped={(cardIndex) => {}}
-          onSwipedAll={() => {}}
-          cardIndex={0}
-          backgroundColor={"transparent"}
-          stackSize={3}
-          onSwipedLeft={() => onSwiped("left")}
-          onSwipedRight={() => onSwiped("right")}
-          onSwipedTop={() => onSwiped("top")}
-          onSwipedBottom={() => onSwiped("bottom")}
-        ></Swiper>
+          dropdownIconPosition={"right"}
+          dropdownStyle={styles.dropdown2DropdownStyle}
+          rowStyle={styles.dropdown2RowStyle}
+          rowTextStyle={styles.dropdown2RowTxtStyle}
+        />
       </View>
+      <View style={{ marginVertical: 10 }}>
+        <SelectDropdown
+          data={["A", "B", "C", "D", "E", "F", "G"]}
+          onSelect={(selectedItem, index) => {
+            setState((prev) => ({
+              ...prev,
+              grade: selectedItem,
+            }));
+          }}
+          defaultButtonText={"Select Section"}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          buttonStyle={styles.dropdown2BtnStyle}
+          buttonTextStyle={styles.dropdown2BtnTxtStyle}
+          renderDropdownIcon={(isOpened) => {
+            return (
+              <FontAwesome
+                name={isOpened ? "chevron-up" : "chevron-down"}
+                color={"#FFF"}
+                size={18}
+              />
+            );
+          }}
+          dropdownIconPosition={"right"}
+          dropdownStyle={styles.dropdown2DropdownStyle}
+          rowStyle={styles.dropdown2RowStyle}
+          rowTextStyle={styles.dropdown2RowTxtStyle}
+        />
+      </View>
+
+      <View style={{ marginVertical: 10 }}>
+        <SelectDropdown
+          data={["Male", "Female"]}
+          defaultButtonText={"Gender"}
+          onSelect={(selectedItem, index) => {
+            setState((prev) => ({
+              ...prev,
+              gender: selectedItem,
+            }));
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          buttonStyle={styles.dropdown2BtnStyle}
+          buttonTextStyle={styles.dropdown2BtnTxtStyle}
+          renderDropdownIcon={(isOpened) => {
+            return (
+              <FontAwesome
+                name={isOpened ? "chevron-up" : "chevron-down"}
+                color={"#FFF"}
+                size={18}
+              />
+            );
+          }}
+          dropdownIconPosition={"right"}
+          dropdownStyle={styles.dropdown2DropdownStyle}
+          rowStyle={styles.dropdown2RowStyle}
+          rowTextStyle={styles.dropdown2RowTxtStyle}
+        />
+      </View>
+      <View style={{ marginVertical: 10 }}>
+        <SelectDropdown
+          data={[
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+          ]}
+          onSelect={(selectedItem, index) => {
+            setState((prev) => ({
+              ...prev,
+              age: selectedItem,
+            }));
+          }}
+          defaultButtonText={"Age"}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          buttonStyle={styles.dropdown2BtnStyle}
+          buttonTextStyle={styles.dropdown2BtnTxtStyle}
+          renderDropdownIcon={(isOpened) => {
+            return (
+              <FontAwesome
+                name={isOpened ? "chevron-up" : "chevron-down"}
+                color={"#FFF"}
+                size={18}
+              />
+            );
+          }}
+          dropdownIconPosition={"right"}
+          dropdownStyle={styles.dropdown2DropdownStyle}
+          rowStyle={styles.dropdown2RowStyle}
+          rowTextStyle={styles.dropdown2RowTxtStyle}
+        />
+      </View>
+      <View style={{ marginVertical: 10 }}>
+        <Pressable
+          onPress={() => {
+            setState((prev) => ({
+              ...prev,
+              isOpen: true,
+            }));
+          }}
+        >
+          <TextInput
+            placeholder="Date Of Birth"
+            style={{ width: width - 80 }}
+            disabled={true}
+            value={state["Date Of Birth"]}
+            placeholderTextColor={"black"}
+          />
+        </Pressable>
+        {state.isOpen && (
+          <TimePicker
+            value={new Date()}
+            mode={"date"}
+            is24Hour={true}
+            display=""
+            onChange={(date) => {
+              setState((prev) => ({
+                ...prev,
+                "Date Of Birth": moment(date.nativeEvent.timestamp).format(
+                  "YYYY-MM-DD"
+                ),
+                isOpen: false,
+              }));
+            }}
+          />
+        )}
+      </View>
+
+      <View style={{ marginVertical: 10 }}>
+        <SelectDropdown
+          data={[
+            "India",
+            "Egypt",
+            "Canada",
+            "Australia",
+            "Ireland",
+            "Brazil",
+            "England",
+            "Dubai",
+            "France",
+            "Germany",
+            "Saudi Arabia",
+            "Argentina",
+          ]}
+          onSelect={(selectedItem, index) => {
+            setState((prev) => ({
+              ...prev,
+              nationality: selectedItem,
+            }));
+          }}
+          defaultButtonText={"Nationality"}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
+          buttonStyle={styles.dropdown2BtnStyle}
+          buttonTextStyle={styles.dropdown2BtnTxtStyle}
+          renderDropdownIcon={(isOpened) => {
+            return (
+              <FontAwesome
+                name={isOpened ? "chevron-up" : "chevron-down"}
+                color={"#FFF"}
+                size={18}
+              />
+            );
+          }}
+          dropdownIconPosition={"right"}
+          dropdownStyle={styles.dropdown2DropdownStyle}
+          rowStyle={styles.dropdown2RowStyle}
+          rowTextStyle={styles.dropdown2RowTxtStyle}
+        />
+      </View>
+
+      <View style={{ marginVertical: 10 }}>
+        <TextInput
+          onChangeText={(text) => onHandleChange(text, "buildingName")}
+          placeholder="BuildingName"
+          style={{ width: width - 80, backgroundColor: "whitesmoke" }}
+        />
+      </View>
+      <View style={{ marginVertical: 10 }}>
+        <TextInput
+          onChangeText={(text) => onHandleChange(text, "roomNumber")}
+          placeholder="RoomNumber"
+          style={{ width: width - 80, backgroundColor: "whitesmoke" }}
+        />
+      </View>
+      <Pressable
+        style={{
+          width,
+          height: 40,
+          backgroundColor: "#eebf80",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "absolute",
+          bottom: 0,
+        }}
+        onPress={OnSubmit}
+      >
+        <Text style={{ color: "white", fontWeight: 800, fontSize: 20 }}>
+          Add Profile
+        </Text>
+      </Pressable>
     </View>
   );
 };
@@ -399,9 +401,131 @@ const EditProfileScreen = () => {
 export default EditProfileScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#F5FCFF",
-    width: 0,
-    height: 60,
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 10,
   },
+  header: {
+    flexDirection: "row",
+
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F6F6F6",
+  },
+  headerTitle: { color: "#000", fontWeight: "bold", fontSize: 16 },
+  saveAreaViewContainer: { flex: 1, backgroundColor: "#FFF" },
+
+  scrollViewContainer: {
+    flexGrow: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: "10%",
+    paddingBottom: "20%",
+  },
+
+  dropdown1BtnStyle: {
+    width: "80%",
+    height: 50,
+    backgroundColor: "#FFF",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#444",
+  },
+  dropdown1BtnTxtStyle: { color: "#444", textAlign: "left" },
+  dropdown1DropdownStyle: { backgroundColor: "#EFEFEF" },
+  dropdown1RowStyle: {
+    // backgroundColor: "#EFEFEF",
+    borderBottomColor: "#C5C5C5",
+  },
+  dropdown1RowTxtStyle: { color: "#444", textAlign: "left" },
+
+  dropdown2BtnStyle: {
+    width: "80%",
+    height: 50,
+    // backgroundColor: "#eac084",
+    alignItems: "center",
+    borderRadius: 8,
+  },
+  dropdown2BtnTxtStyle: {
+    color: "grey",
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+  dropdown2DropdownStyle: {
+    backgroundColor: "#444",
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+  },
+  dropdown2RowStyle: { backgroundColor: "#444", borderBottomColor: "#C5C5C5" },
+  dropdown2RowTxtStyle: {
+    color: "#FFF",
+    textAlign: "center",
+    fontWeight: "bold",
+  },
+
+  dropdown3BtnStyle: {
+    width: "80%",
+    height: 50,
+    backgroundColor: "#FFF",
+    paddingHorizontal: 0,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: "#444",
+  },
+  dropdown3BtnChildStyle: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 18,
+  },
+  dropdown3BtnImage: { width: 45, height: 45, resizeMode: "cover" },
+  dropdown3BtnTxt: {
+    color: "#444",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 24,
+    marginHorizontal: 12,
+  },
+  dropdown3DropdownStyle: { backgroundColor: "slategray" },
+  dropdown3RowStyle: {
+    backgroundColor: "slategray",
+    borderBottomColor: "#444",
+    height: 50,
+  },
+  dropdown3RowChildStyle: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingHorizontal: 18,
+  },
+  dropdownRowImage: { width: 45, height: 45, resizeMode: "cover" },
+  dropdown3RowTxt: {
+    color: "#F1F1F1",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 24,
+    marginHorizontal: 12,
+  },
+
+  dropdown4BtnStyle: {
+    width: "50%",
+    height: 50,
+    backgroundColor: "#FFF",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#444",
+  },
+  dropdown4BtnTxtStyle: { color: "#444", textAlign: "left" },
+  dropdown4DropdownStyle: { backgroundColor: "#EFEFEF" },
+  dropdown4RowStyle: {
+    backgroundColor: "#EFEFEF",
+    borderBottomColor: "#C5C5C5",
+  },
+  dropdown4RowTxtStyle: { color: "#444", textAlign: "left" },
 });

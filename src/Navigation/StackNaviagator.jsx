@@ -17,6 +17,7 @@ import AddEvent from "../Screens/AddEvent";
 import { useSelector } from "react-redux";
 import AsyncStorage from "@react-native-community/async-storage";
 import SplashScreen from "../Screens/splashScreen";
+import LoadingScreen from "../Screens/LoadingScreen";
 
 const StackNaviagator = () => {
   const Tab = createBottomTabNavigator();
@@ -47,28 +48,34 @@ const StackNaviagator = () => {
       <Stack.Navigator>
         {isLoggedIn ? (
           <>
-            {loginData.userRole === "participant" &&
-              !loginData.isUserHaveProfile && (
-                <>
-                  <Stack.Screen
-                    name="CreateProfile"
-                    component={CreateProfile}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen
-                    name="EditProfile"
-                    component={EditProfileScreen}
-                    options={{ headerShown: true }}
-                  />
-                </>
-              )}
+            {loginData.userRole === "participant" && (
+              <>
+                <Stack.Screen
+                  name="CreateProfile"
+                  component={CreateProfile}
+                  options={{ headerShown: false }}
+                />
+
+                <Stack.Screen
+                  name="EditProfile"
+                  component={EditProfileScreen}
+                  options={{ headerShown: true }}
+                />
+              </>
+            )}
 
             <Stack.Screen
               name="UserDashBoard"
               component={UserDashBoard}
               options={{
                 headerLeft: () => <HeaderLeft type={"dashboard"} />,
-                headerRight: () => <HeaderRight set={set} type={"dashboard"} />,
+                headerRight: () => (
+                  <HeaderRight
+                    set={set}
+                    type={"dashboard"}
+                    role={loginData.userRole}
+                  />
+                ),
                 headerTitle: () => (
                   <Header color={"#eebf80"} name={"Dashboard"} />
                 ),

@@ -134,19 +134,20 @@ const SignUpScreen = () => {
       isContinued: true,
     }));
   };
-  const onHandleSignup = (formData) => {
-    const newUser = {
-      username: formData.username,
-      email: formData.email,
-      password: formData.password,
-      confirmPassword: formData.confirmPassword,
-      userRole,
-      phoneNumber: formData.phoneNumber,
-    };
-    dispatch(signupAction(newUser));
-    navigation.navigate("Login");
+  const onHandleSignup = async (formData) => {
+    try {
+      const newUser = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        userRole,
+        phoneNumber: formData.phoneNumber,
+      };
+      await dispatch(signupAction(newUser));
+      await navigation.navigate("Login");
+    } catch (error) {}
   };
-
   return (
     <View
       style={{
