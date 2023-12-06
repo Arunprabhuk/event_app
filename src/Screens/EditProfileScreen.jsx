@@ -132,268 +132,349 @@ const EditProfileScreen = () => {
       style={{
         flex: 1,
         alignItems: "center",
-        paddingTop: 0,
+        paddingTop: 40,
         backgroundColor: "white",
         paddingBottom: 5,
       }}
     >
-      <View style={{ marginVertical: 10 }}>
-        <TextInput
-          onChangeText={(text) => onHandleChange(text, "name")}
-          placeholder="Name"
-          style={{ width: width - 80, backgroundColor: "whitesmoke" }}
-        />
-      </View>
-      <View style={{ marginVertical: 10 }}>
-        <SelectDropdown
-          data={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]}
-          onSelect={(selectedItem, index) => {
-            setState((prev) => ({
-              ...prev,
-              class: selectedItem,
-            }));
-          }}
-          defaultButtonText={"Select Class"}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-          buttonStyle={styles.dropdown2BtnStyle}
-          buttonTextStyle={styles.dropdown2BtnTxtStyle}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <FontAwesome
-                name={isOpened ? "chevron-up" : "chevron-down"}
-                color={"#FFF"}
-                size={18}
-              />
-            );
-          }}
-          dropdownIconPosition={"right"}
-          dropdownStyle={styles.dropdown2DropdownStyle}
-          rowStyle={styles.dropdown2RowStyle}
-          rowTextStyle={styles.dropdown2RowTxtStyle}
-        />
-      </View>
-      <View style={{ marginVertical: 10 }}>
-        <SelectDropdown
-          data={["A", "B", "C", "D", "E", "F", "G"]}
-          onSelect={(selectedItem, index) => {
-            setState((prev) => ({
-              ...prev,
-              grade: selectedItem,
-            }));
-          }}
-          defaultButtonText={"Select Section"}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-          buttonStyle={styles.dropdown2BtnStyle}
-          buttonTextStyle={styles.dropdown2BtnTxtStyle}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <FontAwesome
-                name={isOpened ? "chevron-up" : "chevron-down"}
-                color={"#FFF"}
-                size={18}
-              />
-            );
-          }}
-          dropdownIconPosition={"right"}
-          dropdownStyle={styles.dropdown2DropdownStyle}
-          rowStyle={styles.dropdown2RowStyle}
-          rowTextStyle={styles.dropdown2RowTxtStyle}
-        />
-      </View>
-
-      <View style={{ marginVertical: 10 }}>
-        <SelectDropdown
-          data={["Male", "Female"]}
-          defaultButtonText={"Gender"}
-          onSelect={(selectedItem, index) => {
-            setState((prev) => ({
-              ...prev,
-              gender: selectedItem,
-            }));
-          }}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-          buttonStyle={styles.dropdown2BtnStyle}
-          buttonTextStyle={styles.dropdown2BtnTxtStyle}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <FontAwesome
-                name={isOpened ? "chevron-up" : "chevron-down"}
-                color={"#FFF"}
-                size={18}
-              />
-            );
-          }}
-          dropdownIconPosition={"right"}
-          dropdownStyle={styles.dropdown2DropdownStyle}
-          rowStyle={styles.dropdown2RowStyle}
-          rowTextStyle={styles.dropdown2RowTxtStyle}
-        />
-      </View>
-      <View style={{ marginVertical: 10 }}>
-        <SelectDropdown
-          data={[
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-          ]}
-          onSelect={(selectedItem, index) => {
-            setState((prev) => ({
-              ...prev,
-              age: selectedItem,
-            }));
-          }}
-          defaultButtonText={"Age"}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-          buttonStyle={styles.dropdown2BtnStyle}
-          buttonTextStyle={styles.dropdown2BtnTxtStyle}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <FontAwesome
-                name={isOpened ? "chevron-up" : "chevron-down"}
-                color={"#FFF"}
-                size={18}
-              />
-            );
-          }}
-          dropdownIconPosition={"right"}
-          dropdownStyle={styles.dropdown2DropdownStyle}
-          rowStyle={styles.dropdown2RowStyle}
-          rowTextStyle={styles.dropdown2RowTxtStyle}
-        />
-      </View>
-      <View style={{ marginVertical: 10 }}>
-        <Pressable
-          onPress={() => {
-            setState((prev) => ({
-              ...prev,
-              isOpen: true,
-            }));
-          }}
-        >
+      <View
+        style={{
+          flex: 0.8,
+          alignItems: "center",
+        }}
+      >
+        <View style={{ marginVertical: 10 }}>
           <TextInput
-            placeholder="Date Of Birth"
-            style={{ width: width - 80 }}
-            disabled={true}
-            value={state["Date Of Birth"]}
-            placeholderTextColor={"black"}
-          />
-        </Pressable>
-        {state.isOpen && (
-          <TimePicker
-            value={new Date()}
-            mode={"date"}
-            is24Hour={true}
-            display=""
-            onChange={(date) => {
-              setState((prev) => ({
-                ...prev,
-                "Date Of Birth": moment(date.nativeEvent.timestamp).format(
-                  "YYYY-MM-DD"
-                ),
-                isOpen: false,
-              }));
+            mode="outlined"
+            outlineStyle={{
+              backgroundColor: "white",
+              borderColor: "#eac084",
+              fontWeight: "800",
+              borderRadius: 8,
+            }}
+            onChangeText={(text) => onHandleChange(text, "name")}
+            placeholder="Name"
+            placeholderTextColor={"#eac084"}
+            style={{
+              width: width - 80,
+              backgroundColor: "whitesmoke",
+              fontSize: 14,
+              height: 35,
             }}
           />
-        )}
-      </View>
+        </View>
+        <View style={{ marginVertical: 10 }}>
+          <SelectDropdown
+            data={[
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+            ]}
+            onSelect={(selectedItem, index) => {
+              setState((prev) => ({
+                ...prev,
+                class: selectedItem,
+              }));
+            }}
+            defaultButtonText={"Select Class"}
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+            buttonStyle={styles.dropdown2BtnStyle}
+            buttonTextStyle={styles.dropdown2BtnTxtStyle}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#eac084"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
+            dropdownStyle={styles.dropdown2DropdownStyle}
+            rowStyle={styles.dropdown2RowStyle}
+            rowTextStyle={styles.dropdown2RowTxtStyle}
+          />
+        </View>
+        <View style={{ marginVertical: 10 }}>
+          <SelectDropdown
+            data={["A", "B", "C", "D", "E", "F", "G"]}
+            onSelect={(selectedItem, index) => {
+              setState((prev) => ({
+                ...prev,
+                grade: selectedItem,
+              }));
+            }}
+            defaultButtonText={"Select Section"}
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+            buttonStyle={styles.dropdown2BtnStyle}
+            buttonTextStyle={styles.dropdown2BtnTxtStyle}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#eac084"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
+            dropdownStyle={styles.dropdown2DropdownStyle}
+            rowStyle={styles.dropdown2RowStyle}
+            rowTextStyle={styles.dropdown2RowTxtStyle}
+          />
+        </View>
 
-      <View style={{ marginVertical: 10 }}>
-        <SelectDropdown
-          data={[
-            "India",
-            "Egypt",
-            "Canada",
-            "Australia",
-            "Ireland",
-            "Brazil",
-            "England",
-            "Dubai",
-            "France",
-            "Germany",
-            "Saudi Arabia",
-            "Argentina",
-          ]}
-          onSelect={(selectedItem, index) => {
-            setState((prev) => ({
-              ...prev,
-              nationality: selectedItem,
-            }));
-          }}
-          defaultButtonText={"Nationality"}
-          rowTextForSelection={(item, index) => {
-            return item;
-          }}
-          buttonStyle={styles.dropdown2BtnStyle}
-          buttonTextStyle={styles.dropdown2BtnTxtStyle}
-          renderDropdownIcon={(isOpened) => {
-            return (
-              <FontAwesome
-                name={isOpened ? "chevron-up" : "chevron-down"}
-                color={"#FFF"}
-                size={18}
-              />
-            );
-          }}
-          dropdownIconPosition={"right"}
-          dropdownStyle={styles.dropdown2DropdownStyle}
-          rowStyle={styles.dropdown2RowStyle}
-          rowTextStyle={styles.dropdown2RowTxtStyle}
-        />
-      </View>
+        <View style={{ marginVertical: 10 }}>
+          <SelectDropdown
+            data={["Male", "Female"]}
+            defaultButtonText={"Gender"}
+            onSelect={(selectedItem, index) => {
+              setState((prev) => ({
+                ...prev,
+                gender: selectedItem,
+              }));
+            }}
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+            buttonStyle={styles.dropdown2BtnStyle}
+            buttonTextStyle={styles.dropdown2BtnTxtStyle}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#eac084"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
+            dropdownStyle={styles.dropdown2DropdownStyle}
+            rowStyle={styles.dropdown2RowStyle}
+            rowTextStyle={styles.dropdown2RowTxtStyle}
+          />
+        </View>
+        <View style={{ marginVertical: 10 }}>
+          <SelectDropdown
+            data={[
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6",
+              "7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14",
+              "15",
+              "16",
+              "17",
+              "18",
+            ]}
+            onSelect={(selectedItem, index) => {
+              setState((prev) => ({
+                ...prev,
+                age: selectedItem,
+              }));
+            }}
+            defaultButtonText={"Age"}
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+            buttonStyle={styles.dropdown2BtnStyle}
+            buttonTextStyle={styles.dropdown2BtnTxtStyle}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#eac084"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
+            dropdownStyle={styles.dropdown2DropdownStyle}
+            rowStyle={styles.dropdown2RowStyle}
+            rowTextStyle={styles.dropdown2RowTxtStyle}
+          />
+        </View>
+        <View style={{ marginVertical: 10 }}>
+          <Pressable
+            onPress={() => {
+              setState((prev) => ({
+                ...prev,
+                isOpen: true,
+              }));
+            }}
+          >
+            <TextInput
+              mode="outlined"
+              outlineStyle={{
+                backgroundColor: "white",
+                borderColor: "#eac084",
+                fontWeight: "800",
+                borderRadius: 8,
+              }}
+              placeholder="Date Of Birth"
+              style={{ width: width - 80, fontSize: 14, height: 35 }}
+              disabled={true}
+              value={state["Date Of Birth"]}
+              placeholderTextColor={"#eac084"}
+            />
+          </Pressable>
+          {state.isOpen && (
+            <TimePicker
+              value={new Date()}
+              mode={"date"}
+              is24Hour={true}
+              display=""
+              onChange={(date) => {
+                setState((prev) => ({
+                  ...prev,
+                  "Date Of Birth": moment(date.nativeEvent.timestamp).format(
+                    "YYYY-MM-DD"
+                  ),
+                  isOpen: false,
+                }));
+              }}
+            />
+          )}
+        </View>
 
-      <View style={{ marginVertical: 10 }}>
-        <TextInput
-          onChangeText={(text) => onHandleChange(text, "buildingName")}
-          placeholder="BuildingName"
-          style={{ width: width - 80, backgroundColor: "whitesmoke" }}
-        />
+        <View style={{ marginVertical: 10 }}>
+          <SelectDropdown
+            data={[
+              "India",
+              "Egypt",
+              "Canada",
+              "Australia",
+              "Ireland",
+              "Brazil",
+              "England",
+              "Dubai",
+              "France",
+              "Germany",
+              "Saudi Arabia",
+              "Argentina",
+            ]}
+            onSelect={(selectedItem, index) => {
+              setState((prev) => ({
+                ...prev,
+                nationality: selectedItem,
+              }));
+            }}
+            defaultButtonText={"Nationality"}
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+            buttonStyle={styles.dropdown2BtnStyle}
+            buttonTextStyle={styles.dropdown2BtnTxtStyle}
+            renderDropdownIcon={(isOpened) => {
+              return (
+                <FontAwesome
+                  name={isOpened ? "chevron-up" : "chevron-down"}
+                  color={"#eac084"}
+                  size={18}
+                />
+              );
+            }}
+            dropdownIconPosition={"right"}
+            dropdownStyle={styles.dropdown2DropdownStyle}
+            rowStyle={styles.dropdown2RowStyle}
+            rowTextStyle={styles.dropdown2RowTxtStyle}
+          />
+        </View>
+
+        <View style={{ marginVertical: 10 }}>
+          <TextInput
+            onChangeText={(text) => onHandleChange(text, "buildingName")}
+            placeholder="BuildingName"
+            mode="outlined"
+            outlineStyle={{
+              backgroundColor: "white",
+              borderColor: "#eac084",
+              fontWeight: "800",
+              borderRadius: 8,
+            }}
+            style={{
+              width: width - 80,
+              backgroundColor: "whitesmoke",
+              fontSize: 14,
+              height: 35,
+            }}
+            placeholderTextColor={"#eac084"}
+          />
+        </View>
+        <View style={{ marginVertical: 10 }}>
+          <TextInput
+            onChangeText={(text) => onHandleChange(text, "roomNumber")}
+            placeholder="RoomNumber"
+            mode="outlined"
+            outlineStyle={{
+              backgroundColor: "white",
+              borderColor: "#eac084",
+              fontWeight: "800",
+              borderRadius: 8,
+            }}
+            style={{
+              width: width - 80,
+              backgroundColor: "whitesmoke",
+              fontSize: 14,
+              height: 35,
+            }}
+            placeholderTextColor={"#eac084"}
+          />
+        </View>
+        <View
+          style={{
+            height: 60,
+            marginVertical: 30,
+            alignItems: "center",
+          }}
+        >
+          <Pressable
+            style={{
+              width: width - 70,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#eebf80",
+              paddingBottom: 5,
+              borderRadius: 40,
+            }}
+            onPress={OnSubmit}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontWeight: 800,
+                fontSize: 15,
+                paddingTop: 10,
+              }}
+            >
+              Update Profile
+            </Text>
+          </Pressable>
+        </View>
       </View>
-      <View style={{ marginVertical: 10 }}>
-        <TextInput
-          onChangeText={(text) => onHandleChange(text, "roomNumber")}
-          placeholder="RoomNumber"
-          style={{ width: width - 80, backgroundColor: "whitesmoke" }}
-        />
-      </View>
-      <Pressable
-        style={{
-          width,
-          height: 40,
-          backgroundColor: "#eebf80",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          bottom: 0,
-        }}
-        onPress={OnSubmit}
-      >
-        <Text style={{ color: "white", fontWeight: 800, fontSize: 20 }}>
-          Add Profile
-        </Text>
-      </Pressable>
     </View>
   );
 };
@@ -417,7 +498,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
   },
   headerTitle: { color: "#000", fontWeight: "bold", fontSize: 16 },
-  saveAreaViewContainer: { flex: 1, backgroundColor: "#FFF" },
+  saveAreaViewContainer: { flex: 1, backgroundColor: "#eac084" },
 
   scrollViewContainer: {
     flexGrow: 1,
@@ -430,7 +511,7 @@ const styles = StyleSheet.create({
   dropdown1BtnStyle: {
     width: "80%",
     height: 50,
-    backgroundColor: "#FFF",
+    backgroundColor: "#eac084",
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#444",
@@ -445,15 +526,18 @@ const styles = StyleSheet.create({
 
   dropdown2BtnStyle: {
     width: "80%",
-    height: 50,
-    // backgroundColor: "#eac084",
+    height: 35,
+    backgroundColor: "white",
     alignItems: "center",
     borderRadius: 8,
+    borderColor: "#eac084",
+    borderWidth: 1,
   },
   dropdown2BtnTxtStyle: {
-    color: "grey",
+    color: "#eac084",
     textAlign: "center",
-    fontWeight: "bold",
+    fontWeight: "800",
+    fontSize: 15,
   },
   dropdown2DropdownStyle: {
     backgroundColor: "#444",
@@ -462,7 +546,7 @@ const styles = StyleSheet.create({
   },
   dropdown2RowStyle: { backgroundColor: "#444", borderBottomColor: "#C5C5C5" },
   dropdown2RowTxtStyle: {
-    color: "#FFF",
+    color: "#eac084",
     textAlign: "center",
     fontWeight: "bold",
   },
@@ -470,10 +554,10 @@ const styles = StyleSheet.create({
   dropdown3BtnStyle: {
     width: "80%",
     height: 50,
-    backgroundColor: "#FFF",
+    backgroundColor: "#eac084",
     paddingHorizontal: 0,
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 50,
     borderColor: "#444",
   },
   dropdown3BtnChildStyle: {
@@ -516,7 +600,7 @@ const styles = StyleSheet.create({
   dropdown4BtnStyle: {
     width: "50%",
     height: 50,
-    backgroundColor: "#FFF",
+    backgroundColor: "#eac084",
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#444",

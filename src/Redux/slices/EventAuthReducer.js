@@ -275,7 +275,7 @@ export const getAllAttedence = createAsyncThunk(
       }
     );
     const result = await response.json();
-
+    console.log(result, "hfhfh");
     if (result.statuscode === 200) {
       // Toast.show({
       //   type: "SuccessToast",

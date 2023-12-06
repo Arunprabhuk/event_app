@@ -210,7 +210,7 @@ const SignUpScreen = () => {
                 width: width - 50,
                 height: "100%",
                 alignItems: "center",
-                paddingTop: 80,
+                paddingTop: 50,
               }}
             >
               <Controller
@@ -224,7 +224,7 @@ const SignUpScreen = () => {
                       <AntDesign name="user" size={20} color="#eebf80" />
                     }
                     label={"User Name"}
-                    placeholder="arun"
+                    placeholder="username"
                     value={value}
                     onChangeText={onChange}
                     labelStyle={{ fontSize: 15 }}

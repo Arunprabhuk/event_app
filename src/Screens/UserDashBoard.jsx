@@ -13,22 +13,30 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 const UserDashBoard = () => {
   const navigation = useNavigation();
+  const [userRole, setUserRole] = useState("");
+
   const { UserData, userProfileList, loginData, userDetails, attedence } =
     useSelector((state) => state.eventAuth);
 
   const route = useRoute();
   const dispatch = useDispatch();
-  console.log(userDetails, "hello");
+  console.log(attedence, "attedence");
+
   const getUserDetails = async () => {
     try {
       const userId = await AsyncStorage.getItem("userId");
+      const Role = await AsyncStorage.getItem("userRole");
 
       if (userId !== null) {
         dispatch(getUserDetailsAction(userId));
         dispatch(getAllNamesAction(userId));
-        if (loginData.userRole === "organizer") {
-          dispatch(getAllAttedence(userId));
-        }
+      }
+      if (Role === "organizer") {
+        console.log("workingggg");
+        dispatch(getAllAttedence(userId));
+      }
+      if (Role !== null) {
+        setUserRole(Role);
       }
     } catch (e) {
       alert("Failed to fetch the input from storage");
@@ -39,13 +47,15 @@ const UserDashBoard = () => {
       getUserDetails();
     });
   }, [navigation]);
+  console.log(userRole);
+
   const onClickCard = (name) => {
     switch (name) {
       case "event":
         navigation.navigate("Event", {
           userDetails: userDetails,
           id: "1",
-          userRole: loginData.userRole,
+          userRole: userRole,
         });
 
         break;
@@ -103,7 +113,7 @@ const UserDashBoard = () => {
             <Text style={{ color: "black", marginTop: 3 }}>Event</Text>
           </View>
         </Pressable>
-        {loginData.userRole === "organizer" && (
+        {userRole === "organizer" && (
           <>
             <Pressable onPress={() => onClickCard("addevent")}>
               <View

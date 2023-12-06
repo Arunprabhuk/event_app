@@ -220,17 +220,21 @@ const CreateProfile = () => {
             </View>
             <View
               style={{
-                flex: 0.2,
+                flex: 0.3,
                 height: 60,
-                backgroundColor: "#eebf80",
+
+                alignItems: "center",
               }}
             >
               <Pressable
                 style={{
-                  width,
+                  width: width - 50,
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "center",
+                  backgroundColor: "#eebf80",
+                  paddingBottom: 5,
+                  borderRadius: 40,
                 }}
                 onPress={onCreateProfile}
               >

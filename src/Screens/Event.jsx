@@ -68,12 +68,6 @@ function Event() {
     isuserRole.forEach((event) => {
       const dates = getDifferDate(event.startDate, event.endDate);
       const currentDate = moment().format("YYYY-MM-DD");
-      const currentTime = moment().format("HH:mm");
-      const selectedDate = moment(event.startDate).format("YYYY-MM-DD");
-      const sameDate = moment(currentDate).isSame(moment(selectedDate));
-      const sameTime = moment(event.startTime, "HH:mm")
-        .add(1, "days")
-        .isSameOrAfter(moment(currentTime, "HH:mm"));
 
       dates.forEach((date) => {
         if (!result[date]) {
@@ -87,9 +81,7 @@ function Event() {
           endTime: event.endTime,
           startDate: event.startDate,
           endDate: event.endDate,
-          isLog: moment(currentDate).isSame(moment(date))
-            ? sameDate && sameTime
-            : false,
+          isLog: moment(currentDate).isSame(moment(date)) ? true : false,
         });
       });
     });

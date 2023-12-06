@@ -19,7 +19,6 @@ export const HeaderLeft = ({ type, route }) => {
         height: 50,
         justifyContent: "center",
       }}
-      onPress={() => navigation.navigate(route)}
     >
       {type === "dashboard" && (
         <MaterialCommunityIcons
@@ -33,6 +32,7 @@ export const HeaderLeft = ({ type, route }) => {
           name="arrow-left-top"
           color={"white"}
           size={25}
+          onPress={() => navigation.navigate(route)}
         />
       )}
     </Pressable>
@@ -67,16 +67,19 @@ export const HeaderRight = ({ type, set, role }) => {
         alignItems: "center",
       }}
     >
-      {type === "dashboard" && role === "participant" && (
+      {type === "dashboard" && (
         <Pressable
-          onPress={() => navigation.navigate("CreateProfile")}
+          onPress={() =>
+            role === "participant" && navigation.navigate("CreateProfile")
+          }
           style={{ marginLeft: 15 }}
         >
           <Avatar.Text
             style={{ backgroundColor: "white", fontWeight: 800 }}
-            color="black"
+            color="#eac084"
+            focusable
             size={34}
-            label={name.charAt(0).toUpperCase()}
+            label={role === "participant" ? name.charAt(0).toUpperCase() : "O"}
           />
         </Pressable>
       )}
